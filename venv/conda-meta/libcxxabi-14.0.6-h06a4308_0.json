@@ -1,0 +1,63 @@
+{
+  "build": "h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "constrains": [
+    "libcxx 14.0.6.*"
+  ],
+  "depends": [],
+  "extracted_package_dir": "/opt/conda/pkgs/libcxxabi-14.0.6-h06a4308_0",
+  "files": [
+    "lib/libc++abi.a",
+    "lib/libc++abi.so",
+    "lib/libc++abi.so.1",
+    "lib/libc++abi.so.1.0"
+  ],
+  "fn": "libcxxabi-14.0.6-h06a4308_0.conda",
+  "license": "Apache-2.0 WITH LLVM-exception",
+  "link": {
+    "source": "/opt/conda/pkgs/libcxxabi-14.0.6-h06a4308_0",
+    "type": 1
+  },
+  "md5": "135974475a3280bd51f392f462f9e01c",
+  "name": "libcxxabi",
+  "package_tarball_full_path": "/opt/conda/pkgs/libcxxabi-14.0.6-h06a4308_0.conda",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "lib/libc++abi.a",
+        "path_type": "hardlink",
+        "sha256": "c15ff57576d89d844f26372312ddf9ed1ea688992a1584602945aaed03470ce5",
+        "sha256_in_prefix": "c15ff57576d89d844f26372312ddf9ed1ea688992a1584602945aaed03470ce5",
+        "size_in_bytes": 632242
+      },
+      {
+        "_path": "lib/libc++abi.so",
+        "path_type": "softlink",
+        "sha256": "9b3e2e9664ac2a858c18b043a0e97b83f36d0e3bee5bab5382135c1a34722c1e",
+        "size_in_bytes": 337576
+      },
+      {
+        "_path": "lib/libc++abi.so.1",
+        "path_type": "softlink",
+        "sha256": "9b3e2e9664ac2a858c18b043a0e97b83f36d0e3bee5bab5382135c1a34722c1e",
+        "size_in_bytes": 337576
+      },
+      {
+        "_path": "lib/libc++abi.so.1.0",
+        "path_type": "hardlink",
+        "sha256": "9b3e2e9664ac2a858c18b043a0e97b83f36d0e3bee5bab5382135c1a34722c1e",
+        "sha256_in_prefix": "9b3e2e9664ac2a858c18b043a0e97b83f36d0e3bee5bab5382135c1a34722c1e",
+        "size_in_bytes": 337576
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "5a843055cdeec053fdee6771f3ecd69c74dd14756adff566949a7a9399f5251f",
+  "size": 150650,
+  "subdir": "linux-64",
+  "timestamp": 1662620526000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/libcxxabi-14.0.6-h06a4308_0.conda",
+  "version": "14.0.6"
+}
