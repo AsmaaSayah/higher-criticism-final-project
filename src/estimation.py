@@ -170,5 +170,5 @@ def estimate_text_distribution(human_source_path, ai_source_path,save_file_path=
     # p denotes the probability of a word appearing in a human-generated sentence, while q denotes
     # the probability of a word appearing in an AI-generated sentence.
     log_likelihood_df = calculate_log_probability(human_log_probs, ai_log_probs, frequent_common_vocab)
-    print(log_likelihood_df.head(100))
+    print(log_likelihood_df.sort_values(by='logQ', ascending=False).head(1000))
     log_likelihood_df.to_parquet(save_file_path,index=False)
