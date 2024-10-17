@@ -5,9 +5,9 @@ import nltk
 from nltk.corpus import wordnet
 from nltk import pos_tag
 # Make sure to download the necessary NLTK resources
-nltk.download('averaged_perceptron_tagger')
-nltk.download('wordnet')
-
+nltk.data.path.append('./venv/lib/python3.8/site-packages/nltk_data')
+nltk.download('averaged_perceptron_tagger', download_dir='./venv/lib/python3.8/site-packages/nltk_data')
+nltk.download('wordnet', download_dir='./venv/lib/python3.8/site-packages/nltk_data')
 
 def calculate_hc(human_data, ai_data, gamma_0=0.35):
     # Compute word frequencies for human and AI sentences.
@@ -58,8 +58,7 @@ def calculate_hc(human_data, ai_data, gamma_0=0.35):
 
 def filter_adjectives(word_list):
     # POS tag the words
-    pos_tagged = pos_tag(word_list)
-    
+    pos_tagged = nltk.pos_tag(word_list)
     # Keep only adjectives ('JJ', 'JJR', 'JJS' are tags for adjectives)
     adjectives = [word for word, tag in pos_tagged if tag in ('JJ', 'JJR', 'JJS')]
     
