@@ -164,10 +164,11 @@ def estimate_text_distribution(human_source_path, ai_source_path,save_file_path=
     frequent_human_words = filter_frequent_words(human_word_counts, 5)
     frequent_ai_words = filter_frequent_words(ai_word_counts, 3)
     frequent_common_vocab = common_vocab.intersection(frequent_human_words.keys(), frequent_ai_words.keys())
-
+   
     # Calculate log(p), log(1-p), log(q) and log(1-q) for each word in the common vocabulary
     # and save the results to a Parquet file.
     # p denotes the probability of a word appearing in a human-generated sentence, while q denotes
     # the probability of a word appearing in an AI-generated sentence.
     log_likelihood_df = calculate_log_probability(human_log_probs, ai_log_probs, frequent_common_vocab)
+    print(log_likelihood_df.head(100))
     log_likelihood_df.to_parquet(save_file_path,index=False)
