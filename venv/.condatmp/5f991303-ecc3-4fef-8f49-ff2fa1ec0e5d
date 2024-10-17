@@ -1,0 +1,13 @@
+prefix=/workspaces/higher-criticism-final-project/venv
+exec_prefix=/workspaces/higher-criticism-final-project/venv
+libdir=/workspaces/higher-criticism-final-project/venv/lib
+sharedlibdir=/workspaces/higher-criticism-final-project/venv/lib
+includedir=/workspaces/higher-criticism-final-project/venv/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.13
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
