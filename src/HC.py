@@ -7,7 +7,17 @@ from nltk import pos_tag
 # Make sure to download the necessary NLTK resources
 nltk.data.path.append('./venv/lib/python3.8/site-packages/nltk_data')
 nltk.download('averaged_perceptron_tagger', download_dir='./venv/lib/python3.8/site-packages/nltk_data')
+nltk.download('universal_tagset', download_dir='./venv/lib/python3.8/site-packages/nltk_data')
 nltk.download('wordnet', download_dir='./venv/lib/python3.8/site-packages/nltk_data')
+
+import spacy
+# Load the model
+nlp = spacy.load("en_core_web_sm")
+
+# Function to filter adjectives
+def filter_adjectives_spacy(words):
+    doc = nlp(" ".join(words))
+    return [token.text for token in doc if token.pos_ == "ADJ"]
 
 def calculate_hc(human_data, ai_data, gamma_0=0.35):
     # Compute word frequencies for human and AI sentences.
@@ -30,25 +40,28 @@ def calculate_hc(human_data, ai_data, gamma_0=0.35):
         nw = x + y
         pw = (n2 - y) / (n1 + n2 - nw)  # Probability under the null hypothesis.
         pi = binom_test(x, nw, pw, alternative='two-sided')
-        pi_values.append(pi)
+        pi_values.append((w, pi))
     
-    # Sort the p-values in ascending order.
-    sorted_pi = np.sort(pi_values)
+    # Sort words by p-values in ascending order.
+    pi_values.sort(key=lambda x: x[1])
+    sorted_words, sorted_pis = zip(*pi_values)  # Unzips into two lists
     
     # Compute the HC statistics.
     hc_scores = []
-    imin = next((i for i, pi in enumerate(sorted_pi) if pi >= 1 / N), 0)
+    imin = next((i for i, pi in enumerate(sorted_pis) if pi >= 1 / N), 0)
     for i in range(imin, int(gamma_0 * N)):
-        z_score = np.sqrt(N) * (i / N - sorted_pi[i]) / np.sqrt((i / N) * (1 - i / N))
+        z_score = np.sqrt(N) * (i / N - sorted_pis[i]) / np.sqrt((i / N) * (1 - i / N))
         hc_scores.append(z_score)
     
     # Find the maximum HC score and its index.
     i_star = imin + np.argmax(hc_scores)
-    hc_threshold = sorted_pi[i_star]
+    hc_threshold = sorted_pis[i_star]
     print(hc_threshold)
+    
     # Select words whose p-values are below the HC threshold.
-    hc_words = [w for w, pi in zip(vocabulary, pi_values) if pi <= hc_threshold]
-     # Filter words that are more frequent in AI data compared to human data.
+    hc_words = [w for w, pi in pi_values if pi <= hc_threshold]
+    
+    # Filter words that are more frequent in AI data compared to human data.
     more_frequent_in_ai = [w for w in hc_words if ai_freq.get(w, 0) > human_freq.get(w, 0)]
     
     # Return the number of discriminating words, words more frequently used by AI, and a subset of hc_words.
@@ -56,10 +69,11 @@ def calculate_hc(human_data, ai_data, gamma_0=0.35):
 
 
 
+
 def filter_adjectives(word_list):
     # POS tag the words
-    pos_tagged = nltk.pos_tag(word_list)
+    pos_tagged = nltk.pos_tag(word_list, tagset='universal')
     # Keep only adjectives ('JJ', 'JJR', 'JJS' are tags for adjectives)
-    adjectives = [word for word, tag in pos_tagged if tag in ('JJ', 'JJR', 'JJS')]
+    adjectives = [word for word, tag in pos_tagged if tag == 'ADJ']
     
     return adjectives
