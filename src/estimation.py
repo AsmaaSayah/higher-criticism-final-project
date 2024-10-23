@@ -173,6 +173,7 @@ def estimate_text_distribution(human_source_path, ai_source_path,save_file_path=
     # the probability of a word appearing in an AI-generated sentence.
     log_likelihood_df = calculate_log_probability(human_log_probs, ai_log_probs, frequent_common_vocab)
     #print(log_likelihood_df.sort_values(by='logQ', ascending=False).head(1000))
-    adjectives_only = filter_adjectives_spacy(log_likelihood_df['Word'])
-    print("Adjectives significantly used by AI:", adjectives_only[:100])
+    #adjectives_only = filter_adjectives_spacy(log_likelihood_df['Word'])
+    #print("Adjectives significantly used by AI:", adjectives_only[:100])
     log_likelihood_df.to_parquet(save_file_path,index=False)
+    return log_likelihood_df.sort_values(by='logQ', ascending=False)
