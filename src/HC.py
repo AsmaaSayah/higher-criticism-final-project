@@ -20,6 +20,21 @@ def filter_adjectives_spacy(words):
     return [token.text for token in doc if token.pos_ == "ADJ"]
 
 def calculate_hc(human_data, ai_data, gamma_0=0.35):
+    """
+    This function identifies words that are significantly different between human-written and AI-generated text
+    using the Higher Criticism (HC) method.
+
+    Input:
+    - human_data: A DataFrame containing human-written sentences with a column 'human_sentence' containing lists of words.
+    - ai_data: A DataFrame containing AI-generated sentences with a column 'ai_sentence' containing lists of words.
+    - gamma_0 (float): A parameter that determines up to what fraction of words should be considered for the HC calculation (default is 0.35).
+
+    Output:
+    - len(hc_words): The number of words identified as significant based on the HC threshold.
+    - hc_words[:100]: A list of the first 100 words that meet the HC significance criteria.
+    - more_frequent_in_ai: A list of words from hc_words that are used more frequently in AI-generated text than in human-written text.
+    """
+    
     # Compute word frequencies for human and AI sentences.
     human_freq = pd.Series([word for sentence in human_data['human_sentence'] for word in sentence]).value_counts()
     ai_freq = pd.Series([word for sentence in ai_data['ai_sentence'] for word in sentence]).value_counts()
@@ -69,11 +84,30 @@ def calculate_hc(human_data, ai_data, gamma_0=0.35):
 
 
 
+# Function to filter adjectives.
+def filter_adjectives(word_freq):
+    """
+    Filters out adjectives from a word frequency dictionary.
 
-def filter_adjectives(word_list):
-    # POS tag the words
-    pos_tagged = nltk.pos_tag(word_list, tagset='universal')
-    # Keep only adjectives ('JJ', 'JJR', 'JJS' are tags for adjectives)
-    adjectives = [word for word, tag in pos_tagged if tag == 'ADJ']
+    Parameters:
+    - word_freq (dict): A dictionary where keys are words (strings) and values are their frequencies (integers).
+      Example input: {'quick': 10, 'run': 5, 'beautiful': 8, 'sky': 3}
     
-    return adjectives
+    Returns:
+    - adjectives_only (dict): A dictionary containing only adjectives with their frequencies.
+      Example output: {'quick': 10, 'beautiful': 8}
+    
+    What the function does:
+    - Iterates over each word in the input dictionary.
+    - Uses the spaCy NLP library to determine the part of speech (POS) for each word.
+    - Checks if the word's POS is "ADJ" (indicating an adjective).
+    - If the word is an adjective, it adds the word and its frequency to the output dictionary.
+    """
+    adjectives_only = {}
+    for word, freq in word_freq.items():
+        # Use spaCy to analyze the part of speech.
+        doc = nlp(word)
+        # Check if the word is an adjective.
+        if doc[0].pos_ == 'ADJ':
+            adjectives_only[word] = freq
+    return adjectives_only
